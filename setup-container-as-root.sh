@@ -8,17 +8,17 @@ if [[ "${PROJECT_DIRECTORY}" == "" ]]; then
   exit 1
 fi
 
-# necessary because the package list in the base image is empty
-apt update
+# make sure the docker build command is not blocked by interactions
+export DEBIAN_FRONTEND=noninteractive
 
 # install helpers to debug the setup for convenience, not strictly required
-apt install --yes sudo vim
+apt install --yes --no-install-recommends sudo vim
 
 # install prerequisites not explicitly listed in the tutorial
-apt install --yes python3 python3-pip python3-venv
+apt install --yes --no-install-recommends python3 python3-pip python3-venv
 
 # install dependencies listed in the tutorial in order to test them
-apt install --yes python3-dev libgirepository1.0-dev python3-cairo libcairo2-dev libpango1.0-dev libwebkit2gtk-4.0-37 gir1.2-webkit2-4.0
+apt install --yes --no-install-recommends python3-dev libgirepository1.0-dev libcairo2-dev libpango1.0-dev libwebkit2gtk-4.0-37 gir1.2-webkit2-4.0
 
 # Set up a regular user for more realistic conditions, because certain commands
 # behave different as root. Possibly not necessary, but just to be sure.
