@@ -1,0 +1,14 @@
+# TODO(KNR): Use plain ubuntu and add minimal GUI support to avoid that
+# accidentally certain required dependencies are already preinstalled.
+# Spy in the Dockerfile of x11docker/lxde how to add GUI support.
+FROM x11docker/lxde
+
+# not required, but just in case...
+USER root
+COPY setup-container-as-root.sh /root/bin/
+RUN /root/bin/setup-container-as-root.sh /home/user/toga-dependency-test/
+
+USER user
+COPY helloworld.py /home/user/toga-dependency-test/
+COPY setup-container-as-user.sh /home/user/bin/
+RUN /home/user/bin/setup-container-as-user.sh /home/user/toga-dependency-test/
