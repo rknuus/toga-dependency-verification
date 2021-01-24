@@ -17,10 +17,20 @@ apt install --yes --no-install-recommends vim
 # install prerequisites not explicitly listed in the tutorial
 apt install --yes --no-install-recommends python3 python3-pip python3-venv
 
-# install dependencies listed in the briefcase-template
-# https://github.com/beeware/briefcase-template/blob/v0.3/%7B%7B%20cookiecutter.app_name%20%7D%7D/pyproject.toml
+UBUNTU_VERSION="$(cat /etc/*release | grep VERSION_ID)"
+WEBKIT_PACKAGES=""
+if [[ "${UBUNTU_VERSION}" == 'VERSION_ID="18.04"' ]]; then
+  # install dependencies listed in the briefcase-template
+  # https://github.com/beeware/briefcase-template/blob/v0.3/%7B%7B%20cookiecutter.app_name%20%7D%7D/pyproject.toml
+  WEBKIT_PACKAGES="libwebkitgtk-3.0-0 gir1.2-webkit-3.0"
+elif [[ "${UBUNTU_VERSION}" == 'VERSION_ID="20.04"' ]]; then
+  WEBKIT_PACKAGES="libwebkit2gtk-4.0-37 gir1.2-webkit2-4.0"
+else
+  echo "Error: Linux or Ubuntu version ${UBUNTU_VERSION} is not supported."
+  exit 1
+fi
 # extended by python3-dev, otherwise "pip3 install pycairo" would fail
-apt install --yes --no-install-recommends python3-dev libgirepository1.0-dev libcairo2-dev libpango1.0-dev libwebkitgtk-3.0-0 gir1.2-webkit-3.0
+apt install --yes --no-install-recommends python3-dev libgirepository1.0-dev libcairo2-dev libpango1.0-dev ${WEBKIT_PACKAGES}
 
 # Set up a regular user for more realistic conditions, because certain commands
 # behave different as root. Possibly not necessary, but just to be sure.
