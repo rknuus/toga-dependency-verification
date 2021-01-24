@@ -12,13 +12,15 @@ fi
 export DEBIAN_FRONTEND=noninteractive
 
 # install helpers to debug the setup for convenience, not strictly required
-apt install --yes --no-install-recommends sudo vim
+apt install --yes --no-install-recommends vim
 
 # install prerequisites not explicitly listed in the tutorial
 apt install --yes --no-install-recommends python3 python3-pip python3-venv
 
-# install dependencies listed in the tutorial in order to test them
-apt install --yes --no-install-recommends python3-dev libgirepository1.0-dev libcairo2-dev libpango1.0-dev libwebkit2gtk-4.0-37 gir1.2-webkit2-4.0
+# install dependencies listed in the briefcase-template
+# https://github.com/beeware/briefcase-template/blob/v0.3/%7B%7B%20cookiecutter.app_name%20%7D%7D/pyproject.toml
+# extended by python3-dev, otherwise "pip3 install pycairo" would fail
+apt install --yes --no-install-recommends python3-dev libgirepository1.0-dev libcairo2-dev libpango1.0-dev libwebkitgtk-3.0-0 gir1.2-webkit-3.0
 
 # Set up a regular user for more realistic conditions, because certain commands
 # behave different as root. Possibly not necessary, but just to be sure.
@@ -28,7 +30,6 @@ apt install --yes --no-install-recommends python3-dev libgirepository1.0-dev lib
 #
 # pass the password hash like in https://stackoverflow.com/a/61603505/1776679
 useradd -ms /bin/bash -p '$1$Z0Ri1XrC$h3KoP0dHO5IGTlE4nhX7n1' user
-usermod -aG sudo user
 
 # create the project directory ourselves so that we can pass ownership to user
 mkdir -p "${PROJECT_DIRECTORY}"
