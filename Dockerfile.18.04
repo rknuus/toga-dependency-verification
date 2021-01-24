@@ -85,7 +85,16 @@ USER root
 COPY setup-container-as-root.sh /root/bin/
 RUN /root/bin/setup-container-as-root.sh /home/user/toga-dependency-test/
 
-USER user
+# USER user would have no effect and the copied files would still be owned by
+# root, so don't bother and instead change ownership at the end
 COPY helloworld.py /home/user/toga-dependency-test/
+COPY farenheit_celcius.py /home/user/toga-dependency-test/
+# TODO(KNR): For reasons I haven't analyzed the nested_boxes.py application
+# doesn't find the icons...
+COPY icons/ /home/user/toga-dependency-test/icons/
+COPY nested_boxes.py /home/user/toga-dependency-test/
+RUN chown -R user:user /home/user/toga-dependency-test/
+
+USER user
 COPY setup-container-as-user.sh /home/user/bin/
 RUN /home/user/bin/setup-container-as-user.sh /home/user/toga-dependency-test/
