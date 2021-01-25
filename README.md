@@ -1,5 +1,5 @@
-# Testing toga dependencies In order to test
-[toga](https://github.com/beeware/toga) dependencies on a few Ubuntu versions
+# Testing toga dependencies
+In order to test [toga](https://github.com/beeware/toga) dependencies on a few Ubuntu versions
 provide `Dockerfile`s to setup the test environment. Supported versions are:
 - 18.04
 - 20.04
