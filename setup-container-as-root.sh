@@ -14,23 +14,22 @@ export DEBIAN_FRONTEND=noninteractive
 # install helpers to debug the setup for convenience, not strictly required
 apt install --yes --no-install-recommends vim
 
-# install prerequisites not explicitly listed in the tutorial
+# I don't understand why, but without this line indirect dependency
+# ca-certificates can't be found and fails Docker container build.
+apt update
+
+# install prerequisites not explicitly listed in the tutorial, because they can
+# be reasonably assumed to be installed by the user
 apt install --yes --no-install-recommends python3 python3-pip python3-venv
 
-UBUNTU_VERSION="$(cat /etc/*release | grep VERSION_ID)"
-WEBKIT_PACKAGES=""
-if [[ "${UBUNTU_VERSION}" == 'VERSION_ID="18.04"' ]]; then
-  # install dependencies listed in the briefcase-template
-  # https://github.com/beeware/briefcase-template/blob/v0.3/%7B%7B%20cookiecutter.app_name%20%7D%7D/pyproject.toml
-  WEBKIT_PACKAGES="libwebkitgtk-3.0-0 gir1.2-webkit-3.0"
-elif [[ "${UBUNTU_VERSION}" == 'VERSION_ID="20.04"' ]]; then
-  WEBKIT_PACKAGES="libwebkit2gtk-4.0-37 gir1.2-webkit2-4.0"
-else
-  echo "Error: Linux or Ubuntu version ${UBUNTU_VERSION} is not supported."
-  exit 1
-fi
-# extended by python3-dev, otherwise "pip3 install pycairo" would fail
-apt install --yes --no-install-recommends python3-dev libgirepository1.0-dev libcairo2-dev libpango1.0-dev ${WEBKIT_PACKAGES}
+# insights from my tests:
+# - example browser.py requires gir1.2-webkit2-4.0 on Ubuntu 18.04 and 20.04
+#   (before 17.04 the line `gi.require_version('WebKit2', version)` in
+#   src/gtk/toga_gtk/libs/gtk.py would have to be "WebKit" instead of "WebKit2",
+#   see https://stackoverflow.com/questions/7823972/cant-import-webkit-from-gi-repository)
+# - libwebkit2gtk-4.0-37 also works for both Ubuntu 18.04 and 20.04
+# - without python3-dev `pip3 install pycairo` would fail
+apt install --yes --no-install-recommends python3-dev libgirepository1.0-dev libcairo2-dev libpango1.0-dev libwebkit2gtk-4.0-37 gir1.2-webkit2-4.0
 
 # Set up a regular user for more realistic conditions, because certain commands
 # behave different as root. Possibly not necessary, but just to be sure.
