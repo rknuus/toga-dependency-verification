@@ -24,3 +24,7 @@ pip3 install wheel
 pip3 install pycairo
 pip3 install --pre toga
 pip3 install toga-demo
+
+# Get the toga sources, which contain examples apparently not deployed by
+# the pip package
+git clone https://github.com/beeware/toga.git

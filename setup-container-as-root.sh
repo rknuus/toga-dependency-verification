@@ -14,6 +14,9 @@ export DEBIAN_FRONTEND=noninteractive
 # install helpers to debug the setup for convenience, not strictly required
 apt install --yes --no-install-recommends vim
 
+# git is required to checkout the toga repository in the user script
+apt install --yes --no-install-recommends git
+
 # I don't understand why, but without this line indirect dependency
 # ca-certificates can't be found and fails Docker container build.
 apt update

@@ -18,4 +18,5 @@ The dependencies are based on the
 4. Open an LXTerminal.
 5. Change into the project directory: `cd ~/toga-dependency-test`.
 6. Activate the virtual python environment: `source venv/bin/activate`.
-7. Run the tutorial applications, e.g. `python3 -m helloworld`.
+7. Run the tutorial applications, e.g. `python3 -m helloworld` or
+   `cd toga/examples/<example> && python3 -m <example>`.
