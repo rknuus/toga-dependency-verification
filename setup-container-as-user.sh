@@ -23,3 +23,4 @@ pip3 install wheel
 # that error.
 pip3 install pycairo
 pip3 install --pre toga
+pip3 install toga-demo
